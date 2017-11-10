@@ -76,11 +76,11 @@ cd ..
 
 ## Building from source
 
-#### Project dependencies:
-- [CMake](https://cmake.org/download/)
-- [OpenAL Soft 1.17.2](http://kcat.strangesoft.net/openal.html#download)
-- [SDL 2.0.4](https://www.libsdl.org/download-2.0.php)
-- [WildMIDI 0.4.0](https://github.com/Mindwerks/wildmidi/releases) (optional; required for music)
+#### Dependencies
+See [DEPENDENCIES.md](DEPENDENCIES.md) for the dependencies used.
+
+***Windows*** The dependencies are automatically downloaded and built by the build system.  
+***Linux*** Install the following libraries: ```sudo apt-get install libsdl2-dev libopenal-dev libwildmidi-dev```
 
 #### Building the executable:
 - Create a `build` folder in the top-level directory.
