@@ -39,3 +39,6 @@ ENDIF ()
 
 ADD_SUBDIRECTORY(components)
 ADD_SUBDIRECTORY(OpenTESArena)
+
+include(FeatureSummary)
+feature_summary(WHAT ALL)

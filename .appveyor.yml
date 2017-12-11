@@ -1,0 +1,21 @@
+version: 0.7.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
+image: Visual Studio 2017
+cache: C:\Tools\vcpkg\installed\
+configuration: Release
+install:
+- cmd: vcpkg install sdl2 openal-soft wildmidi
+- cmd: vcpkg upgrade --no-dry-run
+before_build:
+- cmd: cmake -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake .
+build:
+  project: OpenTESArena.sln
+  parallel: true
+  verbosity: normal
+test: off
+artifacts:
+- path: Release
+  name: OpenTESArena-V%APPVEYOR_BUILD_VERSION%
+on_finish:
+- cmd: tree /A

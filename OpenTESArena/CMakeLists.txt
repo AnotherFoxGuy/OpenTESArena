@@ -19,50 +19,50 @@ ENDIF(WILDMIDI_FOUND)
 SET(SRC_ROOT ${TESArena_SOURCE_DIR})
 
 FILE(GLOB_RECURSE TES_ASSETS
-    ${SRC_ROOT}/src/Assets/*.h* 
+    ${SRC_ROOT}/src/Assets/*.h*
     ${SRC_ROOT}/src/Assets/*.c*)
 
 FILE(GLOB_RECURSE TES_ENTITIES
-    ${SRC_ROOT}/src/Entities/*.h* 
+    ${SRC_ROOT}/src/Entities/*.h*
     ${SRC_ROOT}/src/Entities/*.c*)
 
 FILE(GLOB_RECURSE TES_GAME
-    ${SRC_ROOT}/src/Game/*.h* 
+    ${SRC_ROOT}/src/Game/*.h*
     ${SRC_ROOT}/src/Game/*.c*)
 
 FILE(GLOB_RECURSE TES_INTERFACE
-    ${SRC_ROOT}/src/Interface/*.h* 
+    ${SRC_ROOT}/src/Interface/*.h*
     ${SRC_ROOT}/src/Interface/*.c*)
 
 FILE(GLOB_RECURSE TES_ITEMS
-    ${SRC_ROOT}/src/Items/*.h* 
+    ${SRC_ROOT}/src/Items/*.h*
     ${SRC_ROOT}/src/Items/*.c*)
 
 FILE(GLOB_RECURSE TES_MATH
-    ${SRC_ROOT}/src/Math/*.h* 
+    ${SRC_ROOT}/src/Math/*.h*
     ${SRC_ROOT}/src/Math/*.c*)
 
 FILE(GLOB_RECURSE TES_MEDIA
-    ${SRC_ROOT}/src/Media/*.h* 
+    ${SRC_ROOT}/src/Media/*.h*
     ${SRC_ROOT}/src/Media/*.c*)
 
 FILE(GLOB_RECURSE TES_RENDERING
-    ${SRC_ROOT}/src/Rendering/*.h* 
+    ${SRC_ROOT}/src/Rendering/*.h*
     ${SRC_ROOT}/src/Rendering/*.c*)
 
 FILE(GLOB_RECURSE TES_UTILITIES
-    ${SRC_ROOT}/src/Utilities/*.h* 
+    ${SRC_ROOT}/src/Utilities/*.h*
     ${SRC_ROOT}/src/Utilities/*.c*)
 
 FILE(GLOB_RECURSE TES_WORLD
-    ${SRC_ROOT}/src/World/*.h* 
+    ${SRC_ROOT}/src/World/*.h*
     ${SRC_ROOT}/src/World/*.c*)
 
 SET(TES_MAIN ${SRC_ROOT}/src/Main.cpp)
 
 SET(TES_RESOURCES ${CMAKE_SOURCE_DIR}/windows/opentesarena.rc)
 
-SET(TES_SOURCES 
+SET(TES_SOURCES
     ${TES_ASSETS}
     ${TES_ENTITIES}
     ${TES_GAME}
@@ -84,10 +84,6 @@ IF (WIN32)
 ENDIF()
 
 IF (NOT APPLE)
-    # Copy over required files
-    FILE(COPY ${TES_DATA_FOLDER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-    FILE(COPY ${TES_OPTIONS_FOLDER} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
     # Add the rest
     ADD_EXECUTABLE (TESArena ${TES_SOURCES})
 ELSE (APPLE)
@@ -115,6 +111,14 @@ ENDIF()
 
 TARGET_LINK_LIBRARIES(TESArena components ${EXTERNAL_LIBS})
 SET_TARGET_PROPERTIES(TESArena PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${OpenTESArena_BINARY_DIR})
+
+IF (NOT APPLE)
+	# Copy over required files
+	add_custom_command(TARGET TESArena POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:TESArena>/data
+			COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/options $<TARGET_FILE_DIR:TESArena>/options
+			VERBATIM )
+ENDIF()
 
 # Visual Studio filters.
 SOURCE_GROUP("Assets" FILES ${TES_ASSETS})
